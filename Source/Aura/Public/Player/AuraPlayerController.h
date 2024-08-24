@@ -9,6 +9,7 @@
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class IEnemyInterface;
 
 /**
  * 
@@ -20,10 +21,31 @@ class AURA_API AAuraPlayerController : public APlayerController
 
 public:
 	AAuraPlayerController();
-
+	virtual void PlayerTick(float DeltaTime) override;
+	
 protected:
-	void BeginPlay() override;
-	void SetupInputComponent() override;
+	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
+	
+private:
+	/**
+	 * @brief Line trace from cursor.
+	 * @Details There are several scenarios:
+	 * A. LastActor is null && ThisActor is null
+	 *    - Do nothing
+	 * B. LastActor is null && ThisActor is valid
+	 *    - Highlight ThisActor
+	 * C. LastActor is valid && ThisActor is null
+	 *    - UnHighlight LastActor
+	 * D. Both actors are valid, but LastActor != ThisActor
+	 *    - UnHighlight LastActor, and Highlight ThisActor
+	 * E. Both actors are valid, and are the same actor
+	 *    - Do nothing
+	 */
+	void CursorTrace();
+
+	TScriptInterface<IEnemyInterface> _prevTarget;
+	TScriptInterface<IEnemyInterface> _currentTarget;
 	
 private:
 	UFUNCTION()
@@ -34,5 +56,4 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	TObjectPtr<UInputAction> _moveAction;
-
 };
