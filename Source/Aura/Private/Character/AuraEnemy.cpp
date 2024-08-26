@@ -1,4 +1,8 @@
 #include "Character/AuraEnemy.h"
+
+#include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
 
 
@@ -9,6 +13,10 @@ AAuraEnemy::AAuraEnemy()
 	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	_weapon->SetRenderCustomDepth(false);
 	_weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+
+	_abilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>(TEXT("AbilitySystem"));
+	_abilitySystemComponent->SetIsReplicated(true);
+	_attributeSet = CreateDefaultSubobject<UAuraAttributeSet>(TEXT("AttibuteSet"));
 }
 
 void AAuraEnemy::HighlightActor()
