@@ -24,7 +24,7 @@ public:
 	virtual void UnHighlightActor() override;
 
 protected:
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess))
