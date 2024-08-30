@@ -23,7 +23,7 @@ public:
 	
 	/* 서버에 의해 PlayerState가 업데이트되었을 때 호출된다. */
 	virtual void OnRep_PlayerState() override;
-
+	
 private:
 	void InitAbilityActorInfo();
 };

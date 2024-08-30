@@ -3,11 +3,31 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "AttributeSet.h"
 #include "AuraWidgetController.generated.h"
 
 class UAttributeSet;
 class UAbilitySystemComponent;
+class APlayerController;
+
+struct FWidgetControllerParams
+{
+	FWidgetControllerParams() {}
+	FWidgetControllerParams(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
+	: _playerController(PC), _playerState(PS), _abilitySystemComponent(ASC), _attributeSet(AS) {}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	APlayerController* _playerController;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	APlayerState* _playerState;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAbilitySystemComponent* _abilitySystemComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAttributeSet* _attributeSet;
+};
 
 /**
  * 
@@ -18,6 +38,8 @@ class AURA_API UAuraWidgetController : public UObject
 	GENERATED_BODY()
 
 public:
+	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
+	
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	APlayerController* _playerController;
 
