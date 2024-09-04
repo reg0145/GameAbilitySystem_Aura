@@ -29,14 +29,17 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->Get_maxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 
-	Cast<UAuraAbilitySystemComponent>(_abilitySystemComponent)->EffectAssetTags.AddLambda([](const FGameplayTagContainer& AssetTags)
-	{
-		for (const FGameplayTag& Tag : AssetTags)
+	Cast<UAuraAbilitySystemComponent>(_abilitySystemComponent)->EffectAssetTags.AddLambda(
+		[this](const FGameplayTagContainer& AssetTags)
 		{
-			FString Message = FString::Printf(TEXT("GE Tags : %s"), *Tag.ToString());
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Message);
+			for (const FGameplayTag& Tag : AssetTags)
+			{
+				FString Message = FString::Printf(TEXT("GE Tags : %s"), *Tag.ToString());
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Message);
+				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+			}
 		}
-	});
+	);
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
