@@ -32,11 +32,16 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	Cast<UAuraAbilitySystemComponent>(_abilitySystemComponent)->EffectAssetTags.AddLambda(
 		[this](const FGameplayTagContainer& AssetTags)
 		{
+			FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+
 			for (const FGameplayTag& Tag : AssetTags)
 			{
-				FString Message = FString::Printf(TEXT("GE Tags : %s"), *Tag.ToString());
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Message);
-				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+				// "Messsage.HealthPotion".MatchesTag("Message") will return true, "Message".MatchesTag("Message.HealthPotion") will return false
+				if (Tag.MatchesTag(MessageTag))
+				{
+					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+					MessageWidgetRowDelegate.Broadcast(*Row); // Warning : 메시지 테이블에 데이터가 없을 경우 에러가 널포인트 참조 에러가 발생한다.
+				}
 			}
 		}
 	);
