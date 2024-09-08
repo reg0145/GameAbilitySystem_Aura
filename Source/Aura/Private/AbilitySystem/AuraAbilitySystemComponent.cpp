@@ -3,13 +3,15 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
-void UAuraAbilitySystemComponent::AbilityActorInfoSet()
+void UAuraAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor)
 {
+	Super::InitAbilityActorInfo(InOwnerActor, InAvatarActor);
+
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
 }
 
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* UAbilitySystemComponent,
-	const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle EffectHandle)
+                                                const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle EffectHandle)
 {
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);

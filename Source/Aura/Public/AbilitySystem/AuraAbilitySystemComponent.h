@@ -15,10 +15,12 @@ UCLASS()
 class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
+	
 public:
-	void AbilityActorInfoSet();
-
+	virtual void InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor) override;
+	
 	FEffectAssetTags EffectAssetTags;
+	
 protected:
 	void EffectApplied(UAbilitySystemComponent* UAbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle EffectHandle);
 };

@@ -20,14 +20,26 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(_attributeSet);
 
-	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		AuraAttributeSet->Get_healthAttribute()).AddUObject(this, &UOverlayWidgetController::HealthChanged);
-	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		AuraAttributeSet->Get_maxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
-	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		AuraAttributeSet->Get_manaAttribute()).AddUObject(this, &UOverlayWidgetController::ManaChanged);
-	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		AuraAttributeSet->Get_maxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
+	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->Get_healthAttribute()).
+	AddLambda([this](const FOnAttributeChangeData& Data)
+		{
+			OnHealthChanged.Broadcast(Data.NewValue);
+		});
+	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->Get_maxHealthAttribute()).
+	AddLambda([this](const FOnAttributeChangeData& Data)
+		{
+			OnMaxHealthChanged.Broadcast(Data.NewValue);
+		});
+	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->Get_manaAttribute())
+	.AddLambda([this](const FOnAttributeChangeData& Data)
+		{
+			OnManaChanged.Broadcast(Data.NewValue);
+		});
+	_abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->Get_maxManaAttribute())
+	.AddLambda([this](const FOnAttributeChangeData& Data)
+		{
+			OnMaxManaChanged.Broadcast(Data.NewValue);
+		});
 
 	Cast<UAuraAbilitySystemComponent>(_abilitySystemComponent)->EffectAssetTags.AddLambda(
 		[this](const FGameplayTagContainer& AssetTags)
@@ -37,7 +49,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			for (const FGameplayTag& Tag : AssetTags)
 			{
 				// "Messsage.HealthPotion".MatchesTag("Message") will return true, "Message".MatchesTag("Message.HealthPotion") will return false
-				if (Tag.MatchesTag(MessageTag))
+				if (Tag.MatchesTagExact(MessageTag))
 				{
 					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
 					MessageWidgetRowDelegate.Broadcast(*Row); // Warning : 메시지 테이블에 데이터가 없을 경우 에러가 널포인트 참조 에러가 발생한다.
@@ -45,24 +57,4 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			}
 		}
 	);
-}
-
-void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnHealthChanged.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxHealthChanged.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnManaChanged.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxManaChanged.Broadcast(Data.NewValue);
 }
