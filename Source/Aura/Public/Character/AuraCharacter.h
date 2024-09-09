@@ -17,6 +17,10 @@ private:
 
 public:
 	AAuraCharacter();
+
+	/* CombatInterface */
+	virtual int32 GetPlayerLevel() override;
+	/* end CombatInterface */
 	
 	/* PlayerController에 의해 폰이 빙의된 후 호출된다. */
 	virtual void PossessedBy(AController* NewController) override;

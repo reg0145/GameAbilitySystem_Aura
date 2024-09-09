@@ -20,6 +20,13 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationRoll = false;
 }
 
+int32 AAuraCharacter::GetPlayerLevel()
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);
+	return AuraPlayerState->GetPlayerLevel();
+}
+
 void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);

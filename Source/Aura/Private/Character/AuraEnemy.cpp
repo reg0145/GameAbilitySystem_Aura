@@ -21,6 +21,11 @@ AAuraEnemy::AAuraEnemy()
 	_attributeSet = CreateDefaultSubobject<UAuraAttributeSet>(TEXT("AttibuteSet"));
 }
 
+int32 AAuraEnemy::GetPlayerLevel()
+{
+	return _level;
+}
+
 void AAuraEnemy::HighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
