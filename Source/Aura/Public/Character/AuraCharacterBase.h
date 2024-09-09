@@ -24,7 +24,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
-	virtual void InitPrimaryAttributes();
+	virtual void InitializeDefaultAttributes();
+
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> _weapon;
@@ -36,5 +38,8 @@ protected:
     TObjectPtr<UAttributeSet> _attributeSet;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
-	TSubclassOf<UGameplayEffect> _gameplayEffectClass;
+	TSubclassOf<UGameplayEffect> _defaultPrimaryAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> _defaultSecondaryAttributes;
 };
