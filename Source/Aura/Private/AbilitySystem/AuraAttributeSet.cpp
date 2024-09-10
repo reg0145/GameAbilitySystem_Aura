@@ -9,10 +9,6 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	Init_health(50.f);
-	Init_maxHealth(100.f);
-	Init_mana(10.f);
-	Init_maxMana(50.f);
 }
 
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -69,12 +65,12 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _criticalHitResistance, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _healthRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _manaRegeneration, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _maxHealth, COND_None, REPNOTIFY_Always);
-
-	/* Vital Attribute */
-	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _maxMana, COND_None, REPNOTIFY_Always);
+	
+	/* Vital Attribute */
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, _mana, COND_None, REPNOTIFY_Always);
 }
 
 void UAuraAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
