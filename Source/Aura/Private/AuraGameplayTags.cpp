@@ -8,6 +8,9 @@ FAuraGameplayTags FAuraGameplayTags::GameplayTags;
 
 void FAuraGameplayTags::InitializeNativeGameplayTags()
 {
+	/**
+	 * Primary Tags
+	 */
 	GameplayTags._attributes_Primary_Strength = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Strength"),
 		FString("Increases physical damage")
@@ -27,7 +30,10 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Primary.Vigor"),
 		FString("Increases Health")
 		);
-	
+
+	/**
+	 * Secondary Tags
+	 */
 	GameplayTags._attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.Armor"),
 		FString("Reduces Damage taken, improves Block Chance")
